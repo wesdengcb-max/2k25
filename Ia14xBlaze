@@ -16,6 +16,11 @@
         <div id="loginBox" style="
             background:#111; padding:20px; border-radius:10px; box-shadow:0 0 15px #808080;
             width:280px; color:white; display:flex; flex-direction:column; align-items:center;">
+            
+            <!-- Logo i.ibb -->
+            <img src="https://i.ibb.co/qFdBHsmX/logo.png" 
+                 alt="Logo Freitas" style="width:120px; margin-bottom:15px;">
+            
             <h2 style="color:#808080; margin-bottom:15px;"> Acesso Ao Script Freitas </h2>
             <input id="user" type="text" placeholder="Usuário" 
                    style="margin:5px 0; padding:10px; width:100%; border-radius:5px; border:none; outline:none;">
@@ -41,7 +46,7 @@
 
         try {
             const resp = await fetch(urlUsuarios);
-            const lista = await resp.json(); // precisa estar em formato JSON: [ { "user":"xxx", "pass":"yyy" } ]
+            const lista = await resp.json();
 
             const encontrado = lista.find(u => u.user === user && u.pass === pass);
 
@@ -72,17 +77,17 @@
         painel.innerHTML = `
             <canvas id="matrixCanvas" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:-1;opacity:0.5;"></canvas>
             <h2 style="text-align:center;font-size:18px;font-weight:bold;animation:brilhoTitulo 2s infinite alternate;color:#ffffffff;">
-                ⚪️🎯BRANCO SEM GALE FR🎯⚪️ 
+                FREITAS BRANCO SG 1.0 ⚪️🎯🔥 
             </h2>
             <button id="hackWhite" style="padding:10px 15px;background:rgba(255,255,255,0.2);color:black;border:none;font-weight:bold;
                 border-radius:10px;cursor:pointer;width:100%;">HACKEAR BRANCO</button>
             <div id="progressBar" style="margin-top:10px;height:22px;background:#111;border-radius:10px;overflow:hidden;border:2px solid rgba(255, 255, 255, 1);
                 box-shadow:0 0 10px rgba(255, 255, 255, 1),0 0 20px rgba(255, 255, 255, 1);display:none;">
                 <div id="progressInner" style="height:100%;width:0%;background:#00ff00;text-align:center;font-weight:bold;color:#000;
-                    line-height:22px;text-shadow:0 0 5px #ffffffff,0 0 10px #00ff00ff;"></div>
+                    line-height:22px;text-shadow:0 0 5px #ffffffff,0 0 10px #fdfdfdff;"></div>
             </div>
-            <div id="horaBranco" style="margin-top:12px;font-size:18px;text-align:center;font-weight:bold;color:#0022ff;
-                text-shadow:0 0 5px #ffffffff,0 0 10px #ffffffff,0 0 15px #ffffffff;animation:neonRed 1s infinite alternate;">
+            <div id="horaBranco" style="margin-top:12px;font-size:18px;text-align:center;font-weight:bold;color:#ffffffff;
+                text-shadow:0 0 5px #ffffffff,0 0 10px #ffffffff,0 0 15px #ffffffff;animation:neonWhite 1s infinite alternate;">
                 Entrada Prevista: --:--
             </div>
             <div id="pessoasEntrando" style="display:none;text-align:center;font-weight:bold;color:#ffffffff;font-size:14px;
