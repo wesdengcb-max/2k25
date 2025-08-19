@@ -85,7 +85,7 @@
                 text-shadow:0 0 5px #ffffffff,0 0 10px #ffffffff,0 0 15px #ffffffff;animation:neonRed 1s infinite alternate;">
                 Entrada Prevista: --:--
             </div>
-            <div id="pessoasEntrando" style="display:none;text-align:center;font-weight:bold;color:#00ffcc;font-size:14px;
+            <div id="pessoasEntrando" style="display:none;text-align:center;font-weight:bold;color:#ffffffff;font-size:14px;
                 margin-top:10px;animation:piscar 1.5s infinite;">👥 0 clientes entraram!</div>
             <div id="assertividade" style="display:none;text-align:center;font-weight:bold;font-size:15px;margin-top:4px;color:#00ffff;"></div>
             <div style="text-align:center;margin:8px 0;font-weight:bold;color:#ffffffff;animation:piscar 1s infinite;">100% SEM GALE</div>
