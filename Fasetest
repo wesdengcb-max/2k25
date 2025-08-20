@@ -252,10 +252,13 @@
                         divHora.innerText = `Entrada Prevista: ${hora}`;
                         divHora.style.display = "block";
                         divHora.setAttribute("data-hora", hora);
-                        const qtd = Math.floor(Math.random() * 500) + 100;
+
+                        // ← AQUI ALTERAÇÃO: número de clientes entre 10 e 30
+                        const qtd = Math.floor(Math.random() * (30 - 10 + 1)) + 10;
                         const divCli = document.getElementById("pessoasEntrando");
                         divCli.innerText = `👥 ${qtd} clientes entraram!`;
                         divCli.style.display = "block";
+
                         const divPct = document.getElementById("assertividade");
                         divPct.innerText = `🎯 Assertividade: ${pct()}`;
                         divPct.style.display = "block";
