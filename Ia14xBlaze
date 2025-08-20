@@ -1,63 +1,64 @@
 (function () {
-
     // Evita duplicar
     if (document.getElementById("loginTela")) return;
 
-/* ---------- Tela de Login ---------- */
-const loginTela = document.createElement("div");
-loginTela.id = "loginTela";
-loginTela.style = `
-    position: fixed; top:0; left:0; width:100vw; height:100vh;
-    background: #000; display: flex; align-items: center;
-    justify-content: center; z-index: 9999999; font-family: Arial, sans-serif;
-`;
+    /* ---------- Tela de Login Estilizada ---------- */
+    const loginTela = document.createElement("div");
+    loginTela.id = "loginTela";
+    loginTela.style = `
+        position: fixed; top:0; left:0; width:100vw; height:100vh;
+        background: rgba(0,0,0,0.9); display: flex; align-items: center;
+        justify-content: center; z-index: 9999999; font-family: Arial, sans-serif;
+    `;
 
-loginTela.innerHTML = `
-    <div id="loginBox" style="
-        background:transparent; padding:20px; border-radius:10px;
-        width:340px; color:white; display:flex; flex-direction:column; align-items:center;">
-        
-        <!-- Logo (troque o link pelo seu) -->
-        <img src="https://i.ibb.co/4R3w3LDT/IMG-7825.jpg" 
-             alt="Logo Freitas" style="width:260px; margin-bottom:25px; object-fit:contain;">
+    loginTela.innerHTML = `
+        <div id="loginBox" style="
+            background:transparent; padding:20px; border-radius:10px;
+            width:340px; color:white; display:flex; flex-direction:column; align-items:center;">
+            
+            <!-- Logo -->
+            <img src="SUA_LOGO_AQUI.png" 
+                 alt="Logo Freitas" style="width:260px; margin-bottom:25px; object-fit:contain;">
 
-        <p style="margin-bottom:15px; font-size:15px;">
-            <b>Digite sua senha</b> e clique na Plataforma<br>que deseja
-        </p>
+            <p style="margin-bottom:15px; font-size:15px;">
+                <b>Digite sua senha</b> e clique na Plataforma<br>que deseja
+            </p>
 
-        <!-- Campo de senha -->
-        <input id="pass" type="password" placeholder="********"
-               style="margin:10px 0; padding:12px; width:100%; border-radius:6px;
-               border:none; outline:none; text-align:center; font-size:16px;">
+            <!-- Campos de login -->
+            <input id="user" type="text" placeholder="Usuário"
+                   style="margin:5px 0; padding:12px; width:100%; border-radius:6px; border:none; outline:none; text-align:center; font-size:16px;">
+            <input id="pass" type="password" placeholder="********"
+                   style="margin:5px 0; padding:12px; width:100%; border-radius:6px; border:none; outline:none; text-align:center; font-size:16px;">
 
-        <!-- Botões Plataformas -->
-        <div style="display:flex; justify-content:space-between; width:100%; margin-top:15px;">
-            <button id="blazeBtn" style="
-                flex:1; margin-right:8px; padding:12px; font-weight:bold;
-                border-radius:8px; cursor:pointer; background:#000; color:#fff;
-                border:2px solid red; font-size:16px;">🔥 blaze</button>
+            <!-- Botões Plataformas -->
+            <div style="display:flex; justify-content:space-between; width:100%; margin-top:15px;">
+                <button id="blazeBtn" style="
+                    flex:1; margin-right:8px; padding:12px; font-weight:bold;
+                    border-radius:8px; cursor:pointer; background:#000; color:#fff;
+                    border:2px solid red; font-size:16px;">🔥 Blaze</button>
 
-            <button id="jonbetBtn" style="
-                flex:1; margin-left:8px; padding:12px; font-weight:bold;
-                border-radius:8px; cursor:pointer; background:#000; color:#fff;
-                border:2px solid lime; font-size:16px;">💸 JONBET</button>
+                <button id="jonbetBtn" style="
+                    flex:1; margin-left:8px; padding:12px; font-weight:bold;
+                    border-radius:8px; cursor:pointer; background:#000; color:#fff;
+                    border:2px solid lime; font-size:16px;">💸 Jonbet</button>
+            </div>
+
+            <!-- Redes sociais -->
+            <div style="display:flex; justify-content:center; gap:25px; margin-top:25px;">
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" width="32"></a>
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" width="32"></a>
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111728.png" width="32"></a>
+            </div>
         </div>
-
-        <!-- Redes sociais -->
-        <div style="display:flex; justify-content:center; gap:25px; margin-top:25px;">
-            <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" width="32"></a>
-            <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" width="32"></a>
-            <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111728.png" width="32"></a>
-        </div>
-    </div>
-`;
+    `;
 
     document.body.appendChild(loginTela);
 
     // URL onde estão os usuários e senhas em JSON
     const urlUsuarios = "https://doubleblack.shop/users.php";
 
-    document.getElementById("entrarBtn").onclick = async () => {
+    // Função para verificar login
+    async function verificarLogin() {
         const user = document.getElementById("user").value.trim();
         const pass = document.getElementById("pass").value.trim();
 
@@ -69,7 +70,6 @@ loginTela.innerHTML = `
         try {
             const resp = await fetch(urlUsuarios);
             const lista = await resp.json();
-
             const encontrado = lista.find(u => u.user === user && u.pass === pass);
 
             if (encontrado) {
@@ -82,7 +82,11 @@ loginTela.innerHTML = `
             console.error("Erro ao verificar login:", e);
             alert("Erro ao conectar ao servidor de login.");
         }
-    };
+    }
+
+    // Eventos para login
+    document.getElementById("blazeBtn").addEventListener("click", verificarLogin);
+    document.getElementById("jonbetBtn").addEventListener("click", verificarLogin);
 
     /* ---------- Painel (só inicia após login válido) ---------- */
     function iniciarSistema() {
@@ -136,17 +140,22 @@ loginTela.innerHTML = `
         canvas.width = painel.clientWidth;
         canvas.height = painel.clientHeight;
         const letters = Array(256).join("0").split("");
-        setInterval(() => {
-            ctx.fillStyle = "rgba(0,0,0,0.3)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#ffffffff";
-            letters.forEach((y, i) => {
-                const text = String.fromCharCode(30000 + Math.random() * 33);
-                const x = i * 10;
-                ctx.fillText(text, x, y);
-                letters[i] = y > canvas.height + Math.random() * 10000 ? 0 : parseFloat(y) + 10;
-            });
-        }, 40);
+        const bgImg = new Image();
+        bgImg.src = "https://i.ibb.co/4R3w3LDT/IMG-7825.jpg"; 
+        bgImg.onload = () => {
+            setInterval(() => {
+                ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "rgba(0,0,0,0.3)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "#ffffffff";
+                letters.forEach((y, i) => {
+                    const text = String.fromCharCode(30000 + Math.random() * 33);
+                    const x = i * 10;
+                    ctx.fillText(text, x, y);
+                    letters[i] = y > canvas.height + Math.random() * 10000 ? 0 : parseFloat(y) + 10;
+                });
+            }, 40);
+        };
 
         /* ---------- Arraste ---------- */
         painel.addEventListener("mousedown", startDrag);
@@ -185,7 +194,6 @@ loginTela.innerHTML = `
                 return { cor, num };
             });
         }
-
         function renderUltimos() {
             const cont = document.getElementById("ultimosResultados");
             const lista = ultimosResultados();
@@ -214,10 +222,8 @@ loginTela.innerHTML = `
             if (mm >= 60) { h = (h + 1) % 24; mm %= 60; }
             return `${String(h).padStart(2,"0")}:${String(mm).padStart(2,"0")}`;
         }
-
         const pct = () => (Math.random() < .6 ? "100%" : (99 + Math.random()).toFixed(2) + "%");
 
-        /* ---------- Botão Hack ---------- */
         function hackear() {
             const btn = document.getElementById("hackWhite");
             const bar = document.getElementById("progressBar");
@@ -259,12 +265,10 @@ loginTela.innerHTML = `
                 }
             }, 100);
         }
-
         const btnHack = document.getElementById("hackWhite");
         btnHack.addEventListener("click", (e) => { e.stopPropagation(); hackear(); });
         btnHack.addEventListener("touchstart", (e) => { e.stopPropagation(); e.preventDefault(); hackear(); });
 
-        /* ---------- Limpar infos após horário ---------- */
         setInterval(() => {
             const divHora = document.getElementById("horaBranco");
             const alvo = divHora?.getAttribute("data-hora");
@@ -277,7 +281,6 @@ loginTela.innerHTML = `
             }
         }, 1000);
 
-        /* ---------- Notificação Telegram ---------- */
         setInterval(() => {
             if (document.getElementById("notificacaoInsta")) return;
             const n = document.createElement("div");
@@ -287,6 +290,7 @@ loginTela.innerHTML = `
             document.body.appendChild(n);
             setTimeout(() => n.remove(), 3000);
         }, 10000);
+
     }
 
 })();
