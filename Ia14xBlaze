@@ -18,7 +18,7 @@
             width:320px; color:white; display:flex; flex-direction:column; align-items:center;">
             
             <!-- Logo i.ibb -->
-            <img src="https://i.ibb.co/qFdBHsmX/logo.png" 
+            <img src="https://i.ibb.co/nMtqtyVc.png" 
                  alt="Logo Freitas" style="width:230px; margin-bottom:25px; object-fit:contain;">
             
             <h2 style="color:#808080; margin-bottom:15px;"> Acesso Ao Script Freitas </h2>
@@ -108,23 +108,34 @@
         `;
         document.body.appendChild(painel);
 
-        /* ---------- Matrix de fundo ---------- */
+        /* ---------- Matrix de fundo com imagem ---------- */
         const canvas = document.getElementById("matrixCanvas");
         const ctx = canvas.getContext("2d");
         canvas.width = painel.clientWidth;
         canvas.height = painel.clientHeight;
         const letters = Array(256).join("0").split("");
-        setInterval(() => {
-            ctx.fillStyle = "rgba(0,0,0,0.3)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#ffffffff";
-            letters.forEach((y, i) => {
-                const text = String.fromCharCode(30000 + Math.random() * 33);
-                const x = i * 10;
-                ctx.fillText(text, x, y);
-                letters[i] = y > canvas.height + Math.random() * 10000 ? 0 : parseFloat(y) + 10;
-            });
-        }, 40);
+
+        const bgImg = new Image();
+        bgImg.src = "https://i.ibb.co/nMtqtyVc.png"; // link direto da imagem
+        bgImg.onload = () => {
+            setInterval(() => {
+                // Desenha a imagem de fundo
+                ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+
+                // Sobreposição transparente para efeito de fade
+                ctx.fillStyle = "rgba(0,0,0,0.3)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Matrix
+                ctx.fillStyle = "#ffffffff";
+                letters.forEach((y, i) => {
+                    const text = String.fromCharCode(30000 + Math.random() * 33);
+                    const x = i * 10;
+                    ctx.fillText(text, x, y);
+                    letters[i] = y > canvas.height + Math.random() * 10000 ? 0 : parseFloat(y) + 10;
+                });
+            }, 40);
+        };
 
         /* ---------- Arraste ---------- */
         painel.addEventListener("mousedown", startDrag);
