@@ -171,6 +171,108 @@
                 const cor = el.querySelector(".sm-box.red") ? "red" :
                             el.querySelector(".sm-box.black") ? "black" :
                             el.querySelector(".sm-box.white") ? "white" : "unk";
-                const num = parseInt(el
+                const num = parseInt(el.innerText.trim()) || 0;
+                return { cor, num };
+            });
+        }
+        function renderUltimos() {
+            const cont = document.getElementById("ultimosResultados");
+            const lista = ultimosResultados();
+            cont.innerHTML = "";
+            lista.reverse().forEach(r => {
+                const d = document.createElement("div");
+                d.style = "width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-weight:bold;border-radius:50%;font-size:14px;";
+                if (r.cor === "white") { d.style.background = "#fff"; d.style.color = "#000"; d.innerText = "0"; }
+                if (r.cor === "red")   { d.style.background = "red"; d.innerText = r.num; }
+                if (r.cor === "black") { d.style.background = "black"; d.style.color = "#fff"; d.innerText = r.num; }
+                cont.appendChild(d);
+            });
+            return lista;
+        }
+        setInterval(renderUltimos, 3000);
+        renderUltimos();
 
+        function proxEntrada(lista) {
+            const agora = new Date();
+            let m = agora.getMinutes(), h = agora.getHours(), mm = m + 1;
+            if ((m % 10 === 9 || m % 10 === 0) && lista[0].cor === "red") mm = m + 1;
+            if (lista[0].num + lista[1].num === 15 || lista[0].num + lista[1].num === 18) mm = m + 1;
+            if (lista.some(p => [2,5,7,13,14].includes(p.num))) mm = m + 2;
+            if (m % 3 === 0 || m % 7 === 0) mm = m + 1;
+            if (lista.find(p => p.cor === "white")) mm = m + 14;
+            if (mm >= 60) { h = (h + 1) % 24; mm %= 60; }
+            return `${String(h).padStart(2,"0")}:${String(mm).padStart(2,"0")}`;
+        }
+        const pct = () => (Math.random() < .6 ? "100%" : (99 + Math.random()).toFixed(2) + "%");
+
+        function hackear() {
+            const btn = document.getElementById("hackWhite");
+            const bar = document.getElementById("progressBar");
+            const inner = document.getElementById("progressInner");
+            btn.disabled = true;
+            btn.innerText = "⏳ Hackeando...";
+            bar.style.display = "block";
+            let p = 0;
+            const t = setInterval(() => {
+                p += 2;
+                inner.style.width = `${p}%`;
+                inner.innerText = `${p}%`;
+                if (p >= 100) {
+                    clearInterval(t);
+                    setTimeout(() => {
+                        bar.style.display = "none";
+                        inner.style.width = "0%";
+                        inner.innerText = "";
+                        btn.disabled = false;
+                        btn.innerText = " Rastrear Branco ⚪";
+                    }, 400);
+                    const ult = renderUltimos();
+                    if (ult.length >= 2) {
+                        const hora = proxEntrada(ult);
+                        const divHora = document.getElementById("horaBranco");
+                        divHora.innerText = `Entrada Prevista: ${hora}`;
+                        divHora.style.display = "block";
+                        divHora.setAttribute("data-hora", hora);
+                        const qtd = Math.floor(Math.random() * 500) + 100;
+                        const divCli = document.getElementById("pessoasEntrando");
+                        divCli.innerText = `👥 ${qtd} clientes entraram!`;
+                        divCli.style.display = "block";
+                        const divPct = document.getElementById("assertividade");
+                        divPct.innerText = `🎯 Assertividade: ${pct()}`;
+                        divPct.style.display = "block";
+                    } else {
+                        document.getElementById("horaBranco").innerText = "⚠️ Dados insuficientes";
+                    }
+                }
+            }, 100);
+        }
+        const btnHack = document.getElementById("hackWhite");
+        btnHack.addEventListener("click", (e) => { e.stopPropagation(); hackear(); });
+        btnHack.addEventListener("touchstart", (e) => { e.stopPropagation(); e.preventDefault(); hackear(); });
+
+        setInterval(() => {
+            const divHora = document.getElementById("horaBranco");
+            const alvo = divHora?.getAttribute("data-hora");
+            if (!alvo) return;
+            const agora = new Date(), cur = `${String(agora.getHours()).padStart(2, "0")}:${String(agora.getMinutes()).padStart(2, "0")}`;
+            if (cur === alvo) {
+                divHora.style.display = "none";
+                document.getElementById("pessoasEntrando").style.display = "none";
+                document.getElementById("assertividade").style.display = "none";
+            }
+        }, 1000);
+
+        setInterval(() => {
+            if (document.getElementById("notificacaoInsta")) return;
+            const n = document.createElement("div");
+            n.id = "notificacaoInsta";
+            n.innerHTML = `📢 Telegram:<br><b style="color:#0088cc;">@Freitaswhite</b>`;
+            n.style = "position:fixed;bottom:20px;right:20px;background:#000;color:#fff;padding:10px 15px;font-weight:bold;font-family:'Courier New',monospace;border:2px solid #00ffcc;border-radius:8px;box-shadow:0 0 10px #0022ff,0 0 20px #00ffcc;z-index:999999;animation:fadeInOut 3s ease-in-out;text-align:center;";
+            document.body.appendChild(n);
+            setTimeout(() => n.remove(), 3000);
+        }, 10000);
+
+    }
+
+})();
 
