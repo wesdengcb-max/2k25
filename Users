@@ -1,6 +1,12 @@
 [
-    {
-        "user": "admin",
-        "pass": "13191516"
-    }
+  { "user": "admin", "pass": "13191516" },
+  { "user": "Coringa", "pass": "Agencia@17" },
+  { "user": "ivanlimadossantos147@gmail.com", "pass": "Manu2592" }
+  { "user": "Valzaza", "pass": "@Valzaza" },
+  { "user": "Coringa", "pass": "Agencia@17" },
+  { "user": "R.martins", "pass": "34886428Rd" }
+  { "user": "mesquita10", "pass": "12345" },
+  { "user": "joaovitorara12", "pass": "senhatestjoao" },
+  { "user": "Lukinhamotos", "pass": "Lukinha10" }
+  { "user": "alinetomaz21", "pass": "2121" }
 ]
