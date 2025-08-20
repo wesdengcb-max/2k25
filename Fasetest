@@ -55,7 +55,7 @@
     document.body.appendChild(loginTela);
 
     // URL onde estão os usuários e senhas em JSON
-    const urlUsuarios = "https://raw.githubusercontent.com/wesdengcb-max/2k25/refs/heads/main/Users";
+    const urlUsuarios = "https://raw.githubusercontent.com/wesdengcb-max/2k25/d4fd7c6fe11f746c37a9126eb0ce2223369367fa/Users";
 
     // Função para verificar login
     async function verificarLogin() {
