@@ -3,33 +3,55 @@
     // Evita duplicar
     if (document.getElementById("loginTela")) return;
 
-    /* ---------- Tela de Login ---------- */
-    const loginTela = document.createElement("div");
-    loginTela.id = "loginTela";
-    loginTela.style = `
-        position: fixed; top:0; left:0; width:100vw; height:100vh;
-        background: rgba(0,0,0,0.9); display: flex; align-items: center;
-        justify-content: center; z-index: 9999999; font-family: sans-serif;
-    `;
+/* ---------- Tela de Login ---------- */
+const loginTela = document.createElement("div");
+loginTela.id = "loginTela";
+loginTela.style = `
+    position: fixed; top:0; left:0; width:100vw; height:100vh;
+    background: #000; display: flex; align-items: center;
+    justify-content: center; z-index: 9999999; font-family: Arial, sans-serif;
+`;
 
-    loginTela.innerHTML = `
-        <div id="loginBox" style="
-            background:#111; padding:20px; border-radius:10px; box-shadow:0 0 15px #808080;
-            width:320px; color:white; display:flex; flex-direction:column; align-items:center;">
-            
-            <!-- Logo correta -->
-            <img src="https://i.ibb.co/4R3w3LDT/IMG-7825.jpg" 
-                 alt="Logo Freitas" style="width:230px; margin-bottom:25px; object-fit:contain;">
-            
-            <h2 style="color:#808080; margin-bottom:15px;"> Acesso Ao Script Freitas </h2>
-            <input id="user" type="text" placeholder="Usuário" 
-                   style="margin:5px 0; padding:10px; width:100%; border-radius:5px; border:none; outline:none;">
-            <input id="pass" type="password" placeholder="Senha" 
-                   style="margin:5px 0; padding:10px; width:100%; border-radius:5px; border:none; outline:none;">
-            <button id="entrarBtn" style="background:#808080; border:none; padding:10px; margin-top:10px;
-                   width:100%; font-weight:bold; border-radius:5px; cursor:pointer;">Entrar</button>
+loginTela.innerHTML = `
+    <div id="loginBox" style="
+        background:transparent; padding:20px; border-radius:10px;
+        width:340px; color:white; display:flex; flex-direction:column; align-items:center;">
+        
+        <!-- Logo (troque o link pelo seu) -->
+        <img src="https://i.ibb.co/4R3w3LDT/IMG-7825.jpg" 
+             alt="Logo Freitas" style="width:260px; margin-bottom:25px; object-fit:contain;">
+
+        <p style="margin-bottom:15px; font-size:15px;">
+            <b>Digite sua senha</b> e clique na Plataforma<br>que deseja
+        </p>
+
+        <!-- Campo de senha -->
+        <input id="pass" type="password" placeholder="********"
+               style="margin:10px 0; padding:12px; width:100%; border-radius:6px;
+               border:none; outline:none; text-align:center; font-size:16px;">
+
+        <!-- Botões Plataformas -->
+        <div style="display:flex; justify-content:space-between; width:100%; margin-top:15px;">
+            <button id="blazeBtn" style="
+                flex:1; margin-right:8px; padding:12px; font-weight:bold;
+                border-radius:8px; cursor:pointer; background:#000; color:#fff;
+                border:2px solid red; font-size:16px;">🔥 blaze</button>
+
+            <button id="jonbetBtn" style="
+                flex:1; margin-left:8px; padding:12px; font-weight:bold;
+                border-radius:8px; cursor:pointer; background:#000; color:#fff;
+                border:2px solid lime; font-size:16px;">💸 JONBET</button>
         </div>
-    `;
+
+        <!-- Redes sociais -->
+        <div style="display:flex; justify-content:center; gap:25px; margin-top:25px;">
+            <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" width="32"></a>
+            <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" width="32"></a>
+            <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111728.png" width="32"></a>
+        </div>
+    </div>
+`;
+
     document.body.appendChild(loginTela);
 
     // URL onde estão os usuários e senhas em JSON
@@ -108,34 +130,23 @@
         `;
         document.body.appendChild(painel);
 
-        /* ---------- Matrix de fundo com imagem ---------- */
+        /* ---------- Matrix de fundo ---------- */
         const canvas = document.getElementById("matrixCanvas");
         const ctx = canvas.getContext("2d");
         canvas.width = painel.clientWidth;
         canvas.height = painel.clientHeight;
         const letters = Array(256).join("0").split("");
-
-        const bgImg = new Image();
-        bgImg.src = "https://i.ibb.co/4R3w3LDT/IMG-7825.jpg"; // link direto da imagem
-        bgImg.onload = () => {
-            setInterval(() => {
-                // Desenha a imagem de fundo
-                ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
-
-                // Sobreposição transparente para efeito de fade
-                ctx.fillStyle = "rgba(0,0,0,0.3)";
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                // Matrix
-                ctx.fillStyle = "#ffffffff";
-                letters.forEach((y, i) => {
-                    const text = String.fromCharCode(30000 + Math.random() * 33);
-                    const x = i * 10;
-                    ctx.fillText(text, x, y);
-                    letters[i] = y > canvas.height + Math.random() * 10000 ? 0 : parseFloat(y) + 10;
-                });
-            }, 40);
-        };
+        setInterval(() => {
+            ctx.fillStyle = "rgba(0,0,0,0.3)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#ffffffff";
+            letters.forEach((y, i) => {
+                const text = String.fromCharCode(30000 + Math.random() * 33);
+                const x = i * 10;
+                ctx.fillText(text, x, y);
+                letters[i] = y > canvas.height + Math.random() * 10000 ? 0 : parseFloat(y) + 10;
+            });
+        }, 40);
 
         /* ---------- Arraste ---------- */
         painel.addEventListener("mousedown", startDrag);
@@ -163,8 +174,7 @@
             document.addEventListener(isTouch ? "touchend" : "mouseup", end);
         }
 
-        /* ---------- Funções auxiliares, Hack e Notificação ---------- */
-        // Mantidas iguais ao script anterior
+        /* ---------- Funções auxiliares ---------- */
         function ultimosResultados() {
             const entries = document.querySelectorAll(".entries.main .entry");
             return Array.from(entries).slice(0, 6).map(el => {
@@ -175,6 +185,7 @@
                 return { cor, num };
             });
         }
+
         function renderUltimos() {
             const cont = document.getElementById("ultimosResultados");
             const lista = ultimosResultados();
@@ -203,8 +214,10 @@
             if (mm >= 60) { h = (h + 1) % 24; mm %= 60; }
             return `${String(h).padStart(2,"0")}:${String(mm).padStart(2,"0")}`;
         }
+
         const pct = () => (Math.random() < .6 ? "100%" : (99 + Math.random()).toFixed(2) + "%");
 
+        /* ---------- Botão Hack ---------- */
         function hackear() {
             const btn = document.getElementById("hackWhite");
             const bar = document.getElementById("progressBar");
@@ -246,10 +259,12 @@
                 }
             }, 100);
         }
+
         const btnHack = document.getElementById("hackWhite");
         btnHack.addEventListener("click", (e) => { e.stopPropagation(); hackear(); });
         btnHack.addEventListener("touchstart", (e) => { e.stopPropagation(); e.preventDefault(); hackear(); });
 
+        /* ---------- Limpar infos após horário ---------- */
         setInterval(() => {
             const divHora = document.getElementById("horaBranco");
             const alvo = divHora?.getAttribute("data-hora");
@@ -262,6 +277,7 @@
             }
         }, 1000);
 
+        /* ---------- Notificação Telegram ---------- */
         setInterval(() => {
             if (document.getElementById("notificacaoInsta")) return;
             const n = document.createElement("div");
@@ -271,8 +287,6 @@
             document.body.appendChild(n);
             setTimeout(() => n.remove(), 3000);
         }, 10000);
-
     }
 
 })();
-
