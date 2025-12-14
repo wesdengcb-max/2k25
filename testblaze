@@ -1,182 +1,79 @@
-(function () {
-
-    if (document.getElementById("loginTela")) return;
-
-    /* ================= LOGIN ================= */
-    const loginTela = document.createElement("div");
-    loginTela.id = "loginTela";
-    loginTela.style = `
-        position:fixed;inset:0;
-        background:rgba(0,0,0,.9);
-        display:flex;align-items:center;justify-content:center;
-        z-index:9999999;font-family:Arial;
-    `;
-
-    loginTela.innerHTML = `
-    <div style="width:340px;text-align:center;color:#fff">
-        <img src="https://i.ibb.co/4R3w3LDT/IMG-7825.jpg" style="width:260px;margin-bottom:20px">
-        <input id="user" placeholder="Usuário"
-        style="width:100%;padding:12px;border-radius:6px;border:none;margin-bottom:8px;text-align:center">
-        <input id="pass" type="password" placeholder="Senha"
-        style="width:100%;padding:12px;border-radius:6px;border:none;margin-bottom:12px;text-align:center">
-        <button id="blazeBtn"
-        style="width:100%;padding:12px;border-radius:10px;font-weight:bold;background:#000;color:#fff;border:2px solid red">
-        🔥 ENTRAR
-        </button>
-    </div>`;
-
-    document.body.appendChild(loginTela);
-
-    const urlUsuarios = "https://raw.githubusercontent.com/wesdengcb-max/2k25/main/Users";
-
-    async function verificarLogin() {
-        const u = user.value.trim();
-        const p = pass.value.trim();
-        if (!u || !p) return alert("Preencha os campos");
-
-        const r = await fetch(urlUsuarios);
-        const l = await r.json();
-        const ok = l.find(x => x.user === u && x.pass === p);
-
-        if (!ok) return alert("Login inválido");
-        loginTela.remove();
-        iniciarSistema();
-    }
-
-    blazeBtn.onclick = verificarLogin;
-
-    /* ================= PAINEL ================= */
-    function iniciarSistema() {
-
-        const painel = document.createElement("div");
-        painel.id = "painelWhite14x";
-        painel.style = `
-            position:fixed;top:100px;left:20px;
-            width:280px;padding:12px;
-            background:#000;border-radius:18px;
-            color:#fff;font-family:Courier New;
-            z-index:999999;cursor:move;
-        `;
-
-        painel.innerHTML = `
+painel.innerHTML = `
 <style>
-.card{background:linear-gradient(180deg,#020617,#000);
-border-radius:16px;padding:14px;border:1px solid #ffffff30}
-.btn{width:100%;padding:12px;border-radius:12px;font-weight:bold;border:none;cursor:pointer}
-.badge{margin-top:6px;padding:6px;border-radius:8px;border:1px solid #ffffff30;text-align:center}
-.res{display:flex;gap:6px;justify-content:center;margin-top:8px}
+.card{
+  background:linear-gradient(180deg,#020617,#000);
+  border-radius:18px;
+  padding:14px;
+  border:2px solid #ffffff30;
+}
+.btn-main{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:none;
+  font-weight:bold;
+  font-size:15px;
+  cursor:pointer;
+  background:linear-gradient(90deg,#fff,#ddd);
+  color:#000;
+}
+.badge{
+  background:#020617;
+  border:1px solid #ffffff30;
+  border-radius:10px;
+  padding:6px;
+  margin-top:6px;
+  font-size:14px;
+  text-align:center;
+}
+.resultados{
+  display:flex;
+  gap:6px;
+  justify-content:center;
+  margin-top:8px;
+}
 </style>
 
 <canvas id="matrixCanvas"
- style="position:absolute;inset:0;z-index:-1;opacity:.4"></canvas>
+ style="position:absolute;top:0;left:0;width:100%;height:100%;
+ z-index:-1;opacity:.5;"></canvas>
 
 <div class="card">
-<div style="text-align:center;font-weight:bold">FREITAS WHITE ⚪</div>
 
-<button id="hackWhite" class="btn"
- style="background:linear-gradient(90deg,#fff,#ddd);color:#000">
- RASTREAR BRANCO
+<h2 style="text-align:center;font-size:17px;font-weight:bold;">
+FREITAS BRANCO SG 1.0 ⚪️🔥
+</h2>
+
+<button id="hackWhite" class="btn-main">
+RASTREAR BRANCO ⚪
 </button>
 
 <div id="progressBar"
- style="display:none;margin-top:10px;height:20px;border-radius:10px;
- border:1px solid #fff;overflow:hidden">
-<div id="progressInner"
- style="height:100%;width:0;background:#00ff00;color:#000;font-weight:bold;text-align:center"></div>
+ style="display:none;margin-top:10px;height:22px;
+ background:#111;border-radius:10px;overflow:hidden;
+ border:2px solid #fff;">
+ <div id="progressInner"
+  style="height:100%;width:0%;
+  background:#00ff00;color:#000;
+  font-weight:bold;text-align:center;
+  line-height:22px;"></div>
 </div>
 
-<div id="horaBranco" class="badge">Entrada Prevista: --:--</div>
+<div id="horaBranco" class="badge">
+Entrada Prevista: --:--
+</div>
+
 <div id="pessoasEntrando" class="badge" style="display:none"></div>
 <div id="assertividade" class="badge" style="display:none;color:#00ffff"></div>
 
 <div class="badge">🔥 100% SEM GALE</div>
 
-<div style="text-align:center;font-size:13px;margin-top:8px">Últimos</div>
-<div id="ultimosResultados" class="res"></div>
+<div style="font-size:13px;margin-top:10px;text-align:center">
+📌 Últimos Resultados
+</div>
+
+<div id="ultimosResultados" class="resultados"></div>
+
 </div>
 `;
 
-        document.body.appendChild(painel);
-
-        /* ====== FUNÇÕES ORIGINAIS ====== */
-
-        function ultimosResultados() {
-            const entries = document.querySelectorAll(".entries.main .entry");
-            return Array.from(entries).slice(0, 6).map(el => {
-                const cor = el.querySelector(".sm-box.red") ? "red" :
-                            el.querySelector(".sm-box.black") ? "black" :
-                            el.querySelector(".sm-box.white") ? "white" : "unk";
-                const num = parseInt(el.innerText) || 0;
-                return { cor, num };
-            });
-        }
-
-        function renderUltimos() {
-            const cont = ultimosResultadosDiv;
-            cont.innerHTML = "";
-            const lista = ultimosResultados().reverse();
-            lista.forEach(r => {
-                const d = document.createElement("div");
-                d.style = "width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold";
-                if (r.cor === "white") { d.style.background="#fff"; d.style.color="#000"; d.innerText="0"; }
-                if (r.cor === "red")   { d.style.background="red"; d.innerText=r.num; }
-                if (r.cor === "black") { d.style.background="black"; d.style.color="#fff"; d.innerText=r.num; }
-                cont.appendChild(d);
-            });
-            return lista.reverse();
-        }
-
-        function proxEntrada(lista) {
-            const a = new Date();
-            let h=a.getHours(), m=a.getMinutes()+1;
-            if (lista.find(x=>x.cor==="white")) m+=14;
-            if (m>=60){h=(h+1)%24;m%=60}
-            return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`;
-        }
-
-        function hackear() {
-            hackWhite.disabled=true;
-            progressBar.style.display="block";
-            let p=0;
-            const t=setInterval(()=>{
-                p+=2;
-                progressInner.style.width=p+"%";
-                progressInner.innerText=p+"%";
-                if(p>=100){
-                    clearInterval(t);
-                    progressBar.style.display="none";
-                    hackWhite.disabled=false;
-                    const l=renderUltimos();
-                    if(l.length){
-                        const h=proxEntrada(l);
-                        horaBranco.innerText="Entrada Prevista: "+h;
-                        pessoasEntrando.innerText=`👥 ${Math.floor(Math.random()*500)+100} clientes`;
-                        assertividade.innerText="🎯 "+(99+Math.random()).toFixed(2)+"%";
-                        pessoasEntrando.style.display=assertividade.style.display="block";
-                    }
-                }
-            },80);
-        }
-
-        hackWhite.onclick = hackear;
-
-        /* ====== MATRIX ====== */
-        const canvas = matrixCanvas;
-        const ctx = canvas.getContext("2d");
-        canvas.width = painel.clientWidth;
-        canvas.height = painel.clientHeight;
-        const cols = Math.floor(canvas.width/10);
-        const drops = Array(cols).fill(0);
-
-        setInterval(()=>{
-            ctx.fillStyle="rgba(0,0,0,.1)";
-            ctx.fillRect(0,0,canvas.width,canvas.height);
-            ctx.fillStyle="#0f0";
-            drops.forEach((y,i)=>{
-                ctx.fillText("01"[Math.random()*2|0],i*10,y);
-                drops[i]=y>canvas.height?0:y+10;
-            });
-        },50);
-    }
-
-})();
